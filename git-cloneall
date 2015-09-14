@@ -1,0 +1,22 @@
+#!/usr/local/bin/python
+
+import sys
+import os
+import stashy
+
+if __name__ == '__main__':
+    if (len(sys.argv) < 5):
+        print "Usage: cloneall <host> <project> <username> <password>"
+        sys.exit(1);
+    else:        
+        host = sys.argv[1]
+        project = sys.argv[2]
+        username = sys.argv[3]
+        password = sys.argv[4]
+        stash = stashy.connect(host, username, password)
+        for repo in stash.projects[project].repos.list():
+            for url in repo["links"]["clone"]:
+                if (url["name"] == "ssh"):
+                    os.system("git clone %s" % url["href"])
+                    break
+    
